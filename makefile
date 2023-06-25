@@ -1,7 +1,7 @@
 CC = g++
 
-readFile: readFile
-		$(CC) readFile.cpp -o readFile
+main: main
+		$(CC) main.cpp -o main
 
 clean:
-		rm readFile
+		rm main

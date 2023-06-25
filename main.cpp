@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstring>
 #include <climits>
 
 using namespace std;
@@ -36,7 +37,26 @@ int main(int argc, char* argv[]){
 
   file_contents = buffer.str();
 
-  cout << file_contents;
+  int adenine = 0, thymine = 0, guanine = 0, cytosine = 0;
+  char gene;
+
+  for(int i = 0; i < file_contents.size(); i++)
+  {
+    gene = file_contents[i];
+    if(gene == 'A')
+      adenine++;
+    if(gene == 'T')
+      thymine++;
+    if(gene == 'G')
+      guanine++;
+    if(gene == 'C')
+      cytosine++;
+  }
+
+  cout << "A = " << adenine << endl;
+  cout << "T = " << thymine << endl;
+  cout << "G = " << guanine << endl;
+  cout << "C = " << cytosine << endl;
 
   file.close();
 

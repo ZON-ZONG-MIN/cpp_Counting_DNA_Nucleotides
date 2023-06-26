@@ -10,10 +10,11 @@ using namespace std;
 int main(int argc, char* argv[]){
   //cout << "argc = " << argc << endl;
   //cout << "argv[1] = " << argv[1] << endl;
+  //cout << "argv[2] = " << argv[2] << endl;
 
   if(argc <= 1)
   {
-    cout << "please input txt." << endl;
+    cout << "please input Data." << endl;
     return 1;
   }
 
@@ -29,6 +30,8 @@ int main(int argc, char* argv[]){
     return 1;
   }
 
+  cerr << "read file form " << file_path << endl;
+
   stringstream buffer;
 
   buffer << file.rdbuf();
@@ -37,28 +40,59 @@ int main(int argc, char* argv[]){
 
   file_contents = buffer.str();
 
+  file.close();
+
   int adenine = 0, thymine = 0, guanine = 0, cytosine = 0;
-  char gene;
+  char genome;
 
   for(int i = 0; i < file_contents.size(); i++)
   {
-    gene = file_contents[i];
-    if(gene == 'A')
-      adenine++;
-    if(gene == 'T')
-      thymine++;
-    if(gene == 'G')
-      guanine++;
-    if(gene == 'C')
-      cytosine++;
+    genome = file_contents[i];
+
+    switch (genome) {
+      case 'A':
+        adenine++;
+        break;
+      case 'T':
+        thymine++;
+        break;
+      case 'G':
+        guanine++;
+        break;
+      case 'C':
+        cytosine++;
+        break;
+      default:
+        break;  
+    }
   }
 
   cout << "A = " << adenine << endl;
-  cout << "T = " << thymine << endl;
-  cout << "G = " << guanine << endl;
   cout << "C = " << cytosine << endl;
+  cout << "G = " << guanine << endl;
+  cout << "T = " << thymine << endl;
 
-  file.close();
+  ofstream fileOut;
+  string output_name;
+
+  if(argc > 2){
+
+    output_name = argv[2];
+    output_name += ".txt";
+  
+  } else {
+
+    output_name = "output.txt";
+
+  }
+
+  fileOut.open(output_name);
+
+  fileOut << adenine << " " << cytosine << " " << guanine << " " << thymine << endl;
+
+  fileOut.close();
+
+  cerr << "write Result to " << output_name << endl;
 
   return 0;
 }

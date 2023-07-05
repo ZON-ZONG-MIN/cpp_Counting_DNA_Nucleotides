@@ -22,6 +22,9 @@ int main(int argc, char* argv[]){
 
   char* file_path = NULL;
   char* output_path = NULL;
+  string command(argv[1]);
+  argc--;
+  argv++;
 
   while((c = getopt_long(argc, argv, optstring, opts, NULL)) != -1) {
       switch(c) {
@@ -85,54 +88,81 @@ int main(int argc, char* argv[]){
 
   file.close();
 
-  /*compute string*/
+  if(command=="dna"){
 
-  int adenine = 0, thymine = 0, guanine = 0, cytosine = 0;
-  char genome;
+    cout << argc << argv[1] << endl;
+    /* compute DNA string ... */
+    int adenine = 0, thymine = 0, guanine = 0, cytosine = 0;
+    char genome;
 
-  for(int i = 0; i < file_contents.size(); i++)
-  {
-    genome = file_contents[i];
+    for(int i = 0; i < file_contents.size(); i++)
+    {
+      genome = file_contents[i];
 
-    switch (genome) {
-      case 'A':
-        adenine++;
-        break;
-      case 'T':
-        thymine++;
-        break;
-      case 'G':
-        guanine++;
-        break;
-      case 'C':
-        cytosine++;
-        break;
-      default:
-        break;  
+      switch (genome) {
+        case 'A':
+          adenine++;
+          break;
+        case 'T':
+          thymine++;
+          break;
+        case 'G':
+          guanine++;
+          break;
+        case 'C':
+          cytosine++;
+          break;
+        default:
+          break;  
+      }
     }
+
+    cout << "A = " << adenine << endl;
+    cout << "C = " << cytosine << endl;
+    cout << "G = " << guanine << endl;
+    cout << "T = " << thymine << endl;
+
+    /*write output*/
+    ofstream fileOut;
+
+    if(output_path == NULL){
+      char output[] = "output.txt";
+      output_path = output;
+    }
+
+    fileOut.open(output_path);
+
+    fileOut << adenine << " " << cytosine << " " << guanine << " " << thymine << endl;
+
+    fileOut.close();
+
+    cerr << "write Result to " << output_path << endl;
+
+  } else if(command=="rna") {
+
+    /* Transcribing DNA into RNA ... */
+    for(int i = 0; i < file_contents.size(); i++){
+      if(file_contents[i] == 'T')
+        file_contents[i] = 'U';
+    }
+    cout << file_contents << endl;
+
+    /*write output*/
+    ofstream fileOut;
+
+    if(output_path == NULL){
+      char output[] = "output.txt";
+      output_path = output;
+    }
+
+    fileOut.open(output_path);
+
+    fileOut << file_contents;
+
+    fileOut.close();
+
+    cerr << "write Result to " << output_path << endl;
   }
-
-  cout << "A = " << adenine << endl;
-  cout << "C = " << cytosine << endl;
-  cout << "G = " << guanine << endl;
-  cout << "T = " << thymine << endl;
-
-  /*write output*/
   
-  ofstream fileOut;
-
-  if(output_path == NULL){
-    char output[] = "output.txt";
-    output_path = output;
-  }
-
-  fileOut.open(output_path);
-
-  fileOut << adenine << " " << cytosine << " " << guanine << " " << thymine << endl;
-
-  fileOut.close();
-
-  cerr << "write Result to " << output_path << endl;
-
   return 0;
 }
